@@ -1,6 +1,15 @@
 const WebSocket = require('ws');
+const http = require("http")
+const express = require("express")
+const app = express()
+const port = process.env.PORT || 5000
 
-const wss = new WebSocket.Server({port: 8080});
+app.use(express.static(__dirname + "/"))
+
+const server = http.createServer(app)
+server.listen(port)
+
+const wss = new WebSocket.Server({server: server});
 
 console.log("Started");
 
