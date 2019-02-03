@@ -1,23 +1,25 @@
-const WebSocket = require('ws');
+const SocketServer  = require('ws').Server;
 const http = require("http");
 const express = require("express");
-const app = express();
-const port = process.env.PORT || 5000;
+const path = require('path');
 
-app.use(express.static(__dirname + "/"));
+const PORT = process.env.PORT || 5000;
+const INDEX = path.join(__dirname, 'index.html');
 
-const server = http.createServer(app);
-server.listen(port);
+const server = express()
+  .use((req, res) => res.sendFile(INDEX) )
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+  
 
-console.log("Listenin to port " + port);
-
-const wss = new WebSocket.Server({server: server});
+const wss = new SocketServer({ server });
 
 console.log("Started");
 
 wss.on('connection', ws => {
+  console.log("Client connected");
   wss.on('message', message => {
     console.log(`Message ${message} received`);
+    we.send(`Message ${message} received`);
   })
   ws.send('Connection ready!')
 });
