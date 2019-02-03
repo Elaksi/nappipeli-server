@@ -17,9 +17,9 @@ console.log("Started");
 
 wss.on('connection', ws => {
   console.log("Client connected");
-  wss.on('message', message => {
+  ws.on('message', message => {
     console.log(`Message ${message} received`);
     we.send(`Message ${message} received`);
-  })
+  });
   ws.send('Connection ready!')
 });
