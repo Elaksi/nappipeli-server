@@ -1,0 +1,41 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe D:\Eetu\Ohjelmat\Yarn\bin\yarn.js add ws
+
+PATH: 
+  C:\Users\eetun\bin;D:\Eetu\Ohjelmat\Git\mingw64\bin;D:\Eetu\Ohjelmat\Git\usr\local\bin;D:\Eetu\Ohjelmat\Git\usr\bin;D:\Eetu\Ohjelmat\Git\usr\bin;D:\Eetu\Ohjelmat\Git\mingw64\bin;D:\Eetu\Ohjelmat\Git\usr\bin;C:\Users\eetun\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;D:\Eetu\Ohjelmat\PuTTY;C:\WINDOWS\System32\OpenSSH;D:\Eetu\Ladatut tiedostot\ffmpeg-20190116-51978ae-win64-static\bin;D:\Eetu\Ohjelmat\Git\cmd;C:\Users\eetun\.windows-build-tools\python27;D:\Eetu\Ohjelmat\Nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\eetun\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\eetun\AppData\Roaming\npm\node_modules\.bin;D:\Eetu\Ohjelmat\Nodejs;D:\Eetu\Ohjelmat\Python\Scripts;D:\Eetu\Ohjelmat\Python;C:\Users\eetun\AppData\Local\Microsoft\WindowsApps;D:\Eetu\Ohjelmat\Python26;D:\Eetu\Ohjelmat\Python271;D:\Eetu\Ohjelmat\nvm;C:\Program Files\nodejs;D:\Eetu\Ohjelmat\Yarn\bin;D:\Eetu\Ohjelmat\dotnet;D:\Eetu\Ohjelmat\Nodist\bin;C:\Users\eetun\.windows-build-tools\python27;D:\Eetu\Ohjelmat\Nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\eetun\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\eetun\AppData\Roaming\npm\node_modules\.bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;D:\Eetu\Ohjelmat\PuTTY;C:\WINDOWS\System32\OpenSSH;D:\Eetu\Ohjelmat\Nodejs;D:\Eetu\Ladatut tiedostot\ffmpeg-20190116-51978ae-win64-static\bin;D:\Eetu\Ohjelmat\Python\Scripts;D:\Eetu\Ohjelmat\Python;C:\Users\eetun\AppData\Local\Microsoft\WindowsApps;D:\Eetu\Ohjelmat\Python26;D:\Eetu\Ohjelmat\Python271;D:\Eetu\Ohjelmat\nvm;C:\Program Files\nodejs;C:\Users\eetun\AppData\Local\Yarn\bin;D:\Eetu\Ohjelmat\Git\usr\bin\vendor_perl;D:\Eetu\Ohjelmat\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  11.8.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: D:\Eetu\Tiedostot\Git\nappipeli-server\package.json: Unexpected token } in JSON at position 177
+      at JSON.parse (<anonymous>)
+      at D:\Eetu\Ohjelmat\Yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (D:\Eetu\Ohjelmat\Yarn\lib\cli.js:304:30)
+      at D:\Eetu\Ohjelmat\Yarn\lib\cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "Nappipeli-Server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url" : "https://github.com/Elaksi/nappipeli-server.git",
+    },
+    "author": "Elaksi",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

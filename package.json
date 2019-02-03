@@ -1,0 +1,14 @@
+{
+  "name": "Nappipeli-Server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Elaksi/nappipeli-server.git"
+  },
+  "author": "Elaksi",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^6.1.3"
+  }
+}
