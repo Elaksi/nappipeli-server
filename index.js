@@ -13,6 +13,8 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
+let counter = 0;
+
 console.log("Started");
 
 wss.on('connection', ws => {
@@ -20,6 +22,13 @@ wss.on('connection', ws => {
   ws.on('message', message => {
     console.log(`Message ${message} received`);
     ws.send(`Message ${message} received`);
+    if(message == "Pushed"){
+      counter++;
+      ws.send(`Counter now ${counter}`);
+      if(counter % 100 = 0){
+        ws.send(`You won yeah!`);
+      }
+    }
   });
   ws.send('Connection ready!')
 });
