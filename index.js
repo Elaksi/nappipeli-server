@@ -25,7 +25,7 @@ wss.on('connection', ws => {
     if(message == "Pushed"){
       counter++;
       ws.send(`Counter now ${counter}`);
-      if(counter % 100 = 0){
+      if(counter % 100 == 0){
         ws.send(`You won yeah!`);
       }
     }
