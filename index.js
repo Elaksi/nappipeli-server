@@ -17,6 +17,8 @@ let counter = 0;
 
 console.log("Started");
 
+
+
 wss.on('connection', ws => {
   console.log("Client connected");
   ws.on('message', message => {
@@ -25,6 +27,10 @@ wss.on('connection', ws => {
     if(message == "Pushed"){
       counter++;
       ws.send(`Counter now ${counter}`);
+      const prize = {type: "pushResponse", prize: 0,
+      remaining: 1};
+      console.log(JSON.stringify(prize));
+      ws.send(JSON.stringify(prize));
       if(counter % 100 == 0){
         ws.send(`You won yeah!`);
       }
