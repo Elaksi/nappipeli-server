@@ -123,12 +123,15 @@ process.stdin.resume();
 
 function exitHandler(options, err){
   if(!serverUp) return;
+  console.log("Quitting in 5s...");
   serverUp = false;
   jsonData = JSON.stringify({counter: counter, winners: winners});
   fs.writeFileSync(DATAFILE, jsonData);
-  server.close();
-  console.log("Quitting...");
-  process.exit();
+  setTimeout(() => {
+    server.close();
+    console.log("Quitting...");
+    process.exit();
+  }, 5000).unref();
 }
 
 process.on('exit', exitHandler.bind(null,{cleanup:true}));
