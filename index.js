@@ -126,6 +126,8 @@ function exitHandler(options, err){
   serverUp = false;
   jsonData = JSON.stringify({counter: counter, winners: winners});
   fs.writeFileSync(DATAFILE, jsonData);
+  server.close();
+  console.log("Quitting...");
   process.exit();
 }
 
