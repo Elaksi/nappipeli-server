@@ -5,8 +5,11 @@ const io = require('socket.io')(app);
 const prizes = require('./Prizes');
 const actionTypes = require('./ActionTypes');
 const DATAFILE = 'data.json';
+const PORT = process.env.PORT || 8080;
 
-app.listen(80);
+app.listen(PORT, () => {
+  console.log("Listening: " + PORT);
+});
 
 function handler(req, res) {
   fs.readFile(__dirname + '/index.html',
