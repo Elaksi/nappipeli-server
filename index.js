@@ -1,28 +1,20 @@
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const fs = require('fs');
-const app = require("http").createServer(handler);
-const io = require('socket.io')(app);
 
 const prizes = require('./Prizes');
 const actionTypes = require('./ActionTypes');
 const DATAFILE = 'data.json';
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Listening: " + PORT);
 });
 
-function handler(req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if(err){
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-    
-    res.writeHead(200);
-    res.end(data);
-  });
-}
+app.get('/', function (req, res){
+  res.sendFile(__dirname + '/index.html');
+});
 
 let counter = 0;
 let winners = [];
