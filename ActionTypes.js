@@ -1,0 +1,5 @@
+module.exports = {
+  PUSH_BUTTON: 'PUSH_BUTTON',
+  PUSH_SUCCESS: 'PUSH_SUCCESS',
+  WINNER_LIST: 'WINNER_LIST',
+};

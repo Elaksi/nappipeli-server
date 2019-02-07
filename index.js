@@ -1,40 +1,141 @@
-const SocketServer  = require('ws').Server;
-const http = require("http");
-const express = require("express");
-const path = require('path');
+const fs = require('fs');
+const app = require("http").createServer(handler);
+const io = require('socket.io')(app);
 
-const PORT = process.env.PORT || 5000;
-const INDEX = path.join(__dirname, 'index.html');
+const prizes = require('./Prizes');
+const actionTypes = require('./ActionTypes');
+const DATAFILE = 'data.json';
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX) )
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
-  
+app.listen(80);
 
-const wss = new SocketServer({ server });
+function handler(req, res) {
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if(err){
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+    
+    res.writeHead(200);
+    res.end(data);
+  });
+}
 
 let counter = 0;
+let winners = [];
+let jsonData;
 
-console.log("Started");
-
-
-
-wss.on('connection', ws => {
-  console.log("Client connected");
-  ws.on('message', message => {
-    console.log(`Message ${message} received`);
-    ws.send(`Message ${message} received`);
-    if(message == "Pushed"){
-      counter++;
-      ws.send(`Counter now ${counter}`);
-      const prize = {type: "pushResponse", prize: 0,
-      remaining: 1};
-      console.log(JSON.stringify(prize));
-      ws.send(JSON.stringify(prize));
-      if(counter % 100 == 0){
-        ws.send(`You won yeah!`);
-      }
-    }
-  });
-  ws.send('Connection ready!')
+//Create data file if doesn't exist
+fs.writeFile(DATAFILE, "", { flag: 'wx' }, function (err) {
+    console.log("Data file exists");
 });
+
+//Load saved counter and winners
+fs.readFile(DATAFILE, 'utf8', (err, data) => {
+  if(err) console.log(err);
+  if(data != ""){
+    jsonData = JSON.parse(data);
+    if(jsonData.counter != 0){
+      counter = jsonData.counter;
+    }
+    if(jsonData.winners != null){
+      winners = jsonData.winners;
+    }
+  }
+});
+
+//Handle connection and events
+io.on('connection', socket => {
+  console.log('Client connected');
+  
+  //Send latest winner array to connected client
+  emitWinners();
+  
+  //Handle button pushed
+  socket.on(actionTypes.PUSH_BUTTON, (data) => {
+    const playerName = data.playerName;
+    console.log(`Player ${playerName} pushed a button`);
+    counter++;
+    console.log(`Counter now ${counter}`);
+    
+    const responseData = getPushResponse(counter);
+    
+    if(getPrize(counter) != prizes.NONE){
+      console.log(`Prize won..!`);
+      addWinner({time: new Date().getTime(), playerName: playerName, prize: getPrize(counter)});
+      console.log(`Winner added`);
+    }
+    socket.emit(actionTypes.PUSH_SUCCESS, responseData);
+    if (counter == 1000) counter = 0;
+  });
+  
+  socket.on(actionTypes.WINNER_LIST, () => {
+    emitWinners();
+  });
+  
+  //Add new winner
+  function addWinner(win){
+    winners.unshift(win);
+    if(winners.length > 10){
+      winners.pop();
+    }
+    
+    //Send new winner list to every client
+    emitWinners();
+    broadcastWinners();
+  }
+  
+  //Send winner array to client
+  function emitWinners(){
+    console.log("Emitting winners");
+    socket.emit(actionTypes.WINNER_LIST, winners);
+  }
+  
+  //Send winner array to every client
+  function broadcastWinners(){
+    console.log("Emitting winners to everyone");
+    socket.broadcast.emit(actionTypes.WINNER_LIST, winners);
+  }
+});
+
+console.log("Server started");
+
+//Make response for a client that pushed button
+function getPushResponse(pushCount){
+  return {prize: getPrize(counter),
+      remaining: (100 - pushCount % 100)};
+}
+
+//Get prize for counter number
+function getPrize(pushCount){
+  if(pushCount % 500 == 0){
+    return prizes.LARGE;
+  }
+  if(pushCount % 300 == 0){
+    return prizes.MEDIUM;
+  }
+  if(pushCount % 100 == 0){
+    return prizes.SMALL;
+  }
+  return prizes.NONE;
+}
+
+//Handle server closing and save data
+
+let serverUp = true;
+
+process.stdin.resume();
+
+function exitHandler(options, err){
+  if(!serverUp) return;
+  serverUp = false;
+  jsonData = JSON.stringify({counter: counter, winners: winners});
+  fs.writeFileSync(DATAFILE, jsonData);
+  process.exit();
+}
+
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
